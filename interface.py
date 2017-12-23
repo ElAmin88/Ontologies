@@ -1,6 +1,8 @@
 from http.server import *
 from urllib.parse import urlparse
 import Search
+import Preprocessing
+import Spell
 
 HOST = ''
 PORT = 8080
@@ -33,11 +35,19 @@ class BallHandler(BaseHTTPRequestHandler):
 				query = query.replace('+',' ')
 				# Processing query
 				results = Search.search(query)
-
-				for r in results:
-					list = results[r]
-					for document in list:
+				if not results:
+					sw = Spell.SearchWord()
+					words = Preprocessing.Clean(query)
+					spelled = []
+					for word in words:
+						spelled.append(sw.spell(word))
+					for document in spelled[0]:
 						self.wfile.write(make_list(document).encode())
+				else:
+					for r in results:
+						list = results[r]
+						for document in list:
+							self.wfile.write(make_list(document).encode())
 
 				# End processing
 				self.wfile.write(b'\n</ul>\n')
