@@ -19,19 +19,17 @@ def search(sentence):
             result[word]=documents
         except:
             pass
-    res=()
-    if len(words)>1 and result:
-        for r in result:
-            if res:
-                res=res.intersection(result[r])
-            else:
-                res=set(result[r])
-    print(res)
-    return result
+    if  sentence.startswith('"') and sentence.endswith('"'):
+        res=()
+        if len(words)>1 and result:
+            for r in result:
+                if res:
+                    res=res.intersection(result[r])
+                else:
+                    res=set(result[r])
+            return{'result':list(res)}
+        else:
+            return result
+    else:
+        return result
 
-
-
-results = search("bodies close hello banana wiki")
-res =[]
-for r in results:
-    print(r," : ",results[r])

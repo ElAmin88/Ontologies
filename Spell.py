@@ -71,4 +71,3 @@ class SearchWord(object):
         soundex = soundex[:4].ljust(4, "0")
         return soundex
 
-sw=SearchWord()
